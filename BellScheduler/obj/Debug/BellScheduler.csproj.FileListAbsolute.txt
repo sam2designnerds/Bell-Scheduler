@@ -1,0 +1,11 @@
+C:\Bell-Management\BellScheduler\BellScheduler\bin\Debug\BellScheduler.exe.config
+C:\Bell-Management\BellScheduler\BellScheduler\bin\Debug\BellScheduler.exe
+C:\Bell-Management\BellScheduler\BellScheduler\bin\Debug\BellScheduler.pdb
+C:\Bell-Management\BellScheduler\BellScheduler\obj\Debug\BellScheduler.csprojResolveAssemblyReference.cache
+C:\Bell-Management\BellScheduler\BellScheduler\obj\Debug\BellScheduler.BellForm.resources
+C:\Bell-Management\BellScheduler\BellScheduler\obj\Debug\BellScheduler.csproj.GenerateResource.Cache
+C:\Bell-Management\BellScheduler\BellScheduler\obj\Debug\BellScheduler.exe
+C:\Bell-Management\BellScheduler\BellScheduler\obj\Debug\BellScheduler.pdb
+C:\Bell-Management\BellScheduler\BellScheduler\bin\Debug\HtmlAgilityPack.dll
+C:\Bell-Management\BellScheduler\BellScheduler\bin\Debug\HtmlAgilityPack.pdb
+C:\Bell-Management\BellScheduler\BellScheduler\bin\Debug\HtmlAgilityPack.xml
