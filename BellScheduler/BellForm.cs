@@ -12,6 +12,28 @@ namespace BellScheduler
 {
     public partial class BellForm : Form
     {
+
+        public void Download()
+        {
+            BellComunication BellComObj = new BellComunication();
+            string content = BellComObj.DownloadString();
+            string[] splitSeparator = { Environment.NewLine };
+            BellContent.ObjContent.Content = content.Split(splitSeparator, StringSplitOptions.RemoveEmptyEntries);
+            rtbContent.Lines = BellContent.ObjContent.Content;
+            BellContent.ObjContent.IsChanged = false;
+        }
+        public void Save()
+        {
+
+        }
+
+        public void CloseBell()
+        {
+            if (!BellContent.ObjContent.IsSaved)
+            {
+                MessageBox.Show("This needs to save first");
+            }
+        }
         public BellForm()
         {
             InitializeComponent();
@@ -19,11 +41,19 @@ namespace BellScheduler
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
-            BellComunication BellComObj = new BellComunication();
-            string content = BellComObj.DownloadString();
-            string[] splitSeparator = {Environment.NewLine};
-            rtbContent.Lines = content.Split(splitSeparator, StringSplitOptions.RemoveEmptyEntries);
 
+            Download();
+        }
+
+        private void rtbContent_TextChanged(object sender, EventArgs e)
+        {
+            BellContent.ObjContent.IsChanged = true;
+          
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CloseBell();
         }
     }
 }

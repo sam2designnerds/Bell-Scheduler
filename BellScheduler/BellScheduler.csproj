@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BellComunication.cs" />
+    <Compile Include="BellContent.cs" />
     <Compile Include="BellForm.cs">
       <SubType>Form</SubType>
     </Compile>
