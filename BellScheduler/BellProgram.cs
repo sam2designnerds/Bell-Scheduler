@@ -19,9 +19,8 @@ namespace BellScheduler
             if (args.Length != 0) // Console
             {
                 // Run as console code  
-                Console.WriteLine("Running as Console App");
                 BellManager bellManager = new BellManager();
-                bellManager.DownloadFile();
+                bellManager.HandleConsoleRequest(args);
                 Console.Read();
                 
             }
