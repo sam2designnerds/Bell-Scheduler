@@ -26,5 +26,15 @@ namespace BellScheduler
         public static string Password = "Password";
 
         public static string BellSettingsRegKey = @"SOFTWARE\BellScheduleSettings";
+
+        public static string BellSettingIssue = "Please check your set up information to connect the server properly";
+
+        public static string InvalidArg = "Invalid Arguments";
+
+
+        // This section need to be move to a help/Error class later
+
+        public static bool IsSuccess = false;
+        public static string ErrorMessage = string.Empty;
     }
 }

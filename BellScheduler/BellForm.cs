@@ -29,6 +29,21 @@ namespace BellScheduler
         {
             BellComunication BellComObj = BellComunication.ObjCommunication;
             string content = BellComObj.DownloadString();
+            if (!BellConstants.IsSuccess)
+            {
+                if (string.IsNullOrEmpty(BellConstants.ErrorMessage))
+                {
+                    MessageBox.Show("Information is not downloaded due some unknown reason, please try again.");
+                }
+                else
+                {
+                    MessageBox.Show(BellConstants.ErrorMessage);
+                }
+                return;
+            }
+
+
+
             string[] splitSeparator = { Environment.NewLine };
             BellContent.ObjContent.Content = content.Split(splitSeparator, StringSplitOptions.RemoveEmptyEntries);
             rtbContent.Lines = BellContent.ObjContent.Content;
@@ -197,7 +212,32 @@ namespace BellScheduler
 
         private void uploadToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            OpenFileDialog OFDialog = new OpenFileDialog();
+            int size = -1;
+            DialogResult result = OFDialog.ShowDialog(); // Show the dialog.
+            OFDialog.DefaultExt = BellConstants.BellScheduleFileExtention;
+            if (result == DialogResult.OK) // Test result.
+            {
+                string file = OFDialog.FileName;
+                BellManager bellManager = new BellManager();
+                bellManager.UploadFile(file);
+                if (BellConstants.IsSuccess)
+                {
+                    MessageBox.Show("Upload file successfully.");
+                }
+                else if (!BellConstants.IsSuccess)
+                {
+                    if (string.IsNullOrEmpty(BellConstants.ErrorMessage))
+                    {
+                        MessageBox.Show("file is not uploaded due to some unknown reason, please try again.");
+                    }
+                    else
+                    {
+                        MessageBox.Show(BellConstants.ErrorMessage);
+                    }
+                }
 
+            }
         }
 
         private void setupToolStripMenuItem_Click(object sender, EventArgs e)
@@ -208,7 +248,7 @@ namespace BellScheduler
 
         private void btnUpload_Click(object sender, EventArgs e)
         {
-            BellComunication.ObjCommunication.UploadFile();
+           // BellComunication.ObjCommunication.UploadFile();
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)

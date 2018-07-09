@@ -8,6 +8,7 @@ using HtmlAgilityPack;
 using System.Windows.Forms;
 using System.IO;
 using Microsoft.Win32;
+using System.Net.Http;
 
 namespace BellScheduler
 {
@@ -36,6 +37,15 @@ namespace BellScheduler
         public string Port { get; set; } = "8007";
         public string Protocol { get; set; } = "Bells";
 
+        
+
+        public void ClearStatus()
+        {
+
+            BellConstants.IsSuccess = false;
+            BellConstants.ErrorMessage = string.Empty;
+        } 
+
         public string DownloadURL
         {
             get
@@ -51,34 +61,26 @@ namespace BellScheduler
             get
             {
                 string result = string.Empty;
-                result = "http://" + Host + ":" + Port + "/p/bellsDL.htm";
+                result = "http://" + Host + ":" + Port + "/api/pgmbells/add/";
                 return result;
             }
         }
+
+        public string ResetURL
+        {
+            get
+            {
+                string result = string.Empty;
+                result = "http://" + Host + ":" + Port + "/api/pgmbells/clearmem";
+                return result;
+            }
+        }
+
         public String DownloadString()
         {
             String Result = string.Empty;
             String content = string.Empty;
-
-
-            //using (WebClient client = new WebClient())
-            //{
-            //    client.Credentials = new System.Net.NetworkCredential(UserName, Password);
-            //    client.Headers.Add("Content-Type", "application/octet-stream");
-            //    using (Stream fileStream = File.OpenRead(@"C:\Users\ashis.meher\Desktop\Upload.txt"))
-            //    using (Stream requestStream = client.OpenWrite(new Uri(@"http://netbell.dyndns.ws:8007/p/upload.htm"), "POST"))
-            //    {
-            //        fileStream.CopyTo(requestStream);
-            //    }
-            //}
-
-
-
-            //using (var client = new WebClient())
-            //{
-            //    client.Credentials = new System.Net.NetworkCredential(UserName, Password);
-            //    client.UploadFile(@"http://netbell.dyndns.ws:8007/p/upload.htm", @"C:\Users\ashis.meher\Desktop\Upload.txt");
-            //}
+            ClearStatus();
 
             using (var client = new WebClient())
             {
@@ -86,11 +88,12 @@ namespace BellScheduler
                 try
                 {
                     content = client.DownloadString(DownloadURL);
+                    BellConstants.IsSuccess = true;
                 }
                 catch (WebException WE)
                 {
-
-                    MessageBox.Show(WE.Message+Environment.NewLine +"Please check your set up information to connect the server properly");
+                    BellConstants.IsSuccess = false;
+                    BellConstants.ErrorMessage = WE.Message + Environment.NewLine + BellConstants.BellSettingIssue;
                     return Result;
                 }
                 
@@ -102,38 +105,54 @@ namespace BellScheduler
             return Result;
         }
 
-        public void UploadFile()
+        public String UploadBells(List<string> Abells)
         {
-            //using (WebClient client = new WebClient())
-            //{
-            //    client.Credentials = new System.Net.NetworkCredential(UserName, Password);
-            //    client.Headers.Add("Content-Type", "multipart/form-data");
-            //    using (Stream fileStream = File.OpenRead(@"C:\Users\ashis.meher\Desktop\Upload.txt"))
-            //    using (Stream requestStream = client.OpenWrite(new Uri(@"http://netbell.dyndns.ws:8007/p/upload.htm"), "POST"))
-            //    {
-            //        fileStream.CopyTo(requestStream);
-            //    }
-            //}
+            String Result = string.Empty;
+            String content = string.Empty;
 
-            FileStream stream = File.OpenRead(@"C:\Users\ashis.meher\Desktop\Upload.txt");
-            byte[] fileBytes = new byte[stream.Length];
+            ClearStatus();
 
-            stream.Read(fileBytes, 0, fileBytes.Length);
-            stream.Close();
+            // Reset before adding any bells to the system
+            using (var client = new WebClient())
+            {
+                client.Credentials = new System.Net.NetworkCredential(UserName, Password);
+                try
+                {
+                    content = client.DownloadString(ResetURL);
+                    
+                }
+                catch (WebException WE)
+                {
+                    BellConstants.IsSuccess = false;
+                    BellConstants.ErrorMessage = WE.Message + Environment.NewLine + BellConstants.BellSettingIssue;
+                    return Result;
 
-            var url = @"http://netbell.dyndns.ws:8007/p/upload.htm";
-            var webClient = new WebClient();
-                 webClient.Credentials = new System.Net.NetworkCredential(UserName, Password);
-            string boundary = "------------------------" + DateTime.Now.Ticks.ToString("x");
-            webClient.Headers.Add("Content-Type", "multipart/form-data; boundary=" + boundary);
-            var fileData = webClient.Encoding.GetString(fileBytes);
-            var package = string.Format("--{0}\r\nContent-Disposition: form-data; name=\"file\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n{3}\r\n--{0}--\r\n", boundary, "Upload.txt", "multipart/form-data; boundary=" + boundary, fileData);
+                }
 
-            var nfile = webClient.Encoding.GetBytes(package);
+            }
 
-            byte[] resp = webClient.UploadData(url, "POST", nfile);
-            string str = Encoding.ASCII.GetString(resp, 0, resp.Length);
-            MessageBox.Show(str);
+            foreach (var item in Abells)
+            {
+                using (var client = new WebClient())
+                {
+                    client.Credentials = new System.Net.NetworkCredential(UserName, Password);
+                    try
+                    {
+                        content = client.DownloadString(UploadURL+item);
+                        BellConstants.IsSuccess = true;
+                    }
+                    catch (WebException WE)
+                    {
+
+                        BellConstants.IsSuccess = false;
+                        BellConstants.ErrorMessage = WE.Message + Environment.NewLine + BellConstants.BellSettingIssue;
+                    }
+
+                }
+               
+            }
+            return Result;
+
         }
 
         public void SaveSettings()

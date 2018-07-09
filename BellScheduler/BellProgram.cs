@@ -21,7 +21,6 @@ namespace BellScheduler
                 // Run as console code  
                 BellManager bellManager = new BellManager();
                 bellManager.HandleConsoleRequest(args);
-                Console.Read();
                 
             }
             else

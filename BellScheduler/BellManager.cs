@@ -13,6 +13,8 @@ namespace BellScheduler
         string task = string.Empty;
         string fileName = string.Empty;
         bool IsValidArguments;
+
+        
         public void DownloadFile(string AfileName)
         {
             BellComunication BellComObj = new BellComunication();
@@ -22,24 +24,63 @@ namespace BellScheduler
 
         }
 
+        public void UploadFile(string AfileName)
+        {
+            List<string> bells = new List<string>();
+            if (File.Exists(AfileName))
+            {
+                foreach (string line in File.ReadLines(AfileName, Encoding.UTF8))
+                {
+                    // process the line
+                    if (line != @"#Start")
+                    {
+                        bells.Add(line);
+                    }
+                }
+                
+            }
+            if (bells.Count > 0)
+            {
+                BellComunication BellComObj = new BellComunication();
+                BellComObj.UploadBells(bells);
+                //Add the bells to the device
+            }
+        }
+
         public void HandleConsoleRequest(string[] args)
         {
             ParseConsoleCommand(args);
             if (!IsValidArguments)
             {
-                Console.Write(BellConstants.HelpMessage);
+                Console.Write(BellConstants.InvalidArg + Environment.NewLine + BellConstants.HelpMessage);
                 return;
              }
 
             if (task == BellConstants.Upload)
             {
                 // Do the uplaod task
+                UploadFile(fileName);
+                if (BellConstants.IsSuccess)
+                {
+                    Console.WriteLine("Upload Successful");
+                }
+
+               
             }
             else if (task == BellConstants.Download)
             {
                 // Do the download task
                 
                 DownloadFile(fileName);
+                if (BellConstants.IsSuccess)
+                {
+                    Console.WriteLine("Download Successful");
+                }
+            }
+            else
+            {
+                Console.Write(BellConstants.InvalidArg+ Environment.NewLine +BellConstants.HelpMessage);
+                return;
             }
 
         }
@@ -48,8 +89,15 @@ namespace BellScheduler
         {
           
             var result = Parser.Default.ParseArguments<Options>(args);
+            if (result.Value.Task==null)
+            {
+                IsValidArguments = true;
+                return;
+           
+            }
             task = result.Value.Task.ToLower();
             fileName = result.Value.FileName;
+            
 
             if (!(task == BellConstants.Upload || task == BellConstants.Download))
             {
