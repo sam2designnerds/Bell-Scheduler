@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 using Microsoft.Win32;
 using System.Net.Http;
+using System.Threading;
 
 namespace BellScheduler
 {
@@ -32,6 +33,7 @@ namespace BellScheduler
         public string UserName { get; set; } = "admin";
         public string Password { get; set; } = "admin";
 
+        public int Delay { get; set; } = 1000;
         public string ComMode { get; set; } = "TCP/IP";
         public string Host { get; set; } = "netbell.dyndns.ws";
         public string Port { get; set; } = "8007";
@@ -149,6 +151,8 @@ namespace BellScheduler
                     }
 
                 }
+                // Adding the delay
+                Thread.Sleep(Delay);
                
             }
             return Result;
@@ -164,6 +168,7 @@ namespace BellScheduler
             key.SetValue(BellConstants.Protocol, Protocol);
             key.SetValue(BellConstants.UserName, UserName);
             key.SetValue(BellConstants.Password, Password);
+            key.SetValue(BellConstants.Delay, Delay);
         }
 
         public void RetriveSettings()
@@ -185,6 +190,7 @@ namespace BellScheduler
             Protocol = Registry.GetValue(key.Name, BellConstants.Protocol, Protocol).ToString();
             UserName = Registry.GetValue(key.Name, BellConstants.UserName, UserName).ToString();
             Password = Registry.GetValue(key.Name, BellConstants.Password, Password).ToString();
+            Delay = Convert.ToInt32(Registry.GetValue(key.Name, BellConstants.Delay, Delay));
         }
 
     }

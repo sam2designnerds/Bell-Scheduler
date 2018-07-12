@@ -41,6 +41,9 @@
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtDelay = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -72,7 +75,7 @@
             // 
             this.txtPort.Location = new System.Drawing.Point(112, 62);
             this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(125, 22);
+            this.txtPort.Size = new System.Drawing.Size(142, 22);
             this.txtPort.TabIndex = 3;
             // 
             // label3
@@ -104,6 +107,7 @@
             this.label4.Size = new System.Drawing.Size(79, 17);
             this.label4.TabIndex = 6;
             this.label4.Text = "UserName:";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label5
             // 
@@ -130,7 +134,7 @@
             // 
             // btnOk
             // 
-            this.btnOk.Location = new System.Drawing.Point(328, 217);
+            this.btnOk.Location = new System.Drawing.Point(328, 244);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 32);
             this.btnOk.TabIndex = 10;
@@ -140,7 +144,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(244, 217);
+            this.btnCancel.Location = new System.Drawing.Point(244, 244);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 32);
             this.btnCancel.TabIndex = 11;
@@ -150,19 +154,47 @@
             // 
             // btnHelp
             // 
-            this.btnHelp.Location = new System.Drawing.Point(163, 217);
+            this.btnHelp.Location = new System.Drawing.Point(163, 244);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(75, 32);
             this.btnHelp.TabIndex = 12;
             this.btnHelp.Text = "Help";
             this.btnHelp.UseVisualStyleBackColor = true;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(58, 187);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(48, 17);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Delay:";
+            // 
+            // txtDelay
+            // 
+            this.txtDelay.Location = new System.Drawing.Point(113, 187);
+            this.txtDelay.Name = "txtDelay";
+            this.txtDelay.Size = new System.Drawing.Size(141, 22);
+            this.txtDelay.TabIndex = 14;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(261, 191);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(38, 17);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "(mS)";
+            // 
             // SetupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.ClientSize = new System.Drawing.Size(431, 261);
+            this.ClientSize = new System.Drawing.Size(431, 297);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.txtDelay);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
@@ -200,5 +232,8 @@
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnHelp;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtDelay;
+        private System.Windows.Forms.Label label7;
     }
 }

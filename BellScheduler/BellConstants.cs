@@ -24,6 +24,7 @@ namespace BellScheduler
         public static string Protocol = "Protocol";
         public static string UserName = "UserName";
         public static string Password = "Password";
+        public static string Delay = "Delay";
 
         public static string BellSettingsRegKey = @"SOFTWARE\BellScheduleSettings";
 
