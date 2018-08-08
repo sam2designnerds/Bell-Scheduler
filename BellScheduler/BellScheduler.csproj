@@ -82,6 +82,12 @@
     <Compile Include="DeviceData.Designer.cs">
       <DependentUpon>DeviceData.cs</DependentUpon>
     </Compile>
+    <Compile Include="ScheduleData.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ScheduleData.Designer.cs">
+      <DependentUpon>ScheduleData.cs</DependentUpon>
+    </Compile>
     <Compile Include="SetupForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +109,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DeviceData.resx">
       <DependentUpon>DeviceData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScheduleData.resx">
+      <DependentUpon>ScheduleData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SetupForm.resx">
       <DependentUpon>SetupForm.cs</DependentUpon>
