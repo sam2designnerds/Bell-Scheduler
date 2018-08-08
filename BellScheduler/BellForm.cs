@@ -15,6 +15,9 @@ namespace BellScheduler
     public partial class BellForm : Form
     {
 
+        List<DeviceData> Data = new List<DeviceData>();
+        List<ScheduleData> SData = new List<ScheduleData>();
+
         public void CheckOpenContentNeedsToSave()
         {
             if ((rtbContent.Text != string.Empty) && BellContent.ObjContent.IsSaveRequired(rtbContent.Lines))
@@ -248,7 +251,16 @@ namespace BellScheduler
 
         private void btnUpload_Click(object sender, EventArgs e)
         {
-           // BellComunication.ObjCommunication.UploadFile();
+            // BellComunication.ObjCommunication.UploadFile();
+
+            //testing is going on
+
+            DeviceData t1 = new DeviceData();
+            Data.Add(t1);
+
+            // for Schedule data
+
+            ScheduleData sd1 = new ScheduleData();
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -260,6 +272,18 @@ namespace BellScheduler
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < Data.Count; i++)
+            {
+                //10+(i* Data[i].Height -5)
+                Data[i].Location = new Point(10, 5+(i * 28));
+
+                Data[i].DeviceNumber = i + 1;
+                panel2.Controls.Add(Data[i]);
+            }
         }
     }
 }
