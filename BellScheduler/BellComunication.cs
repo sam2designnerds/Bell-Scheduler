@@ -16,7 +16,7 @@ namespace BellScheduler
     class BellComunication
     {
 
-       
+
         public static BellComunication bellCommunication = null;
 
         public static BellComunication ObjCommunication
@@ -39,14 +39,24 @@ namespace BellScheduler
         public string Port { get; set; } = "8007";
         public string Protocol { get; set; } = "Bells";
 
-        
+        public bool DoClear { get; set; } = true;
+
+        public void AssignCommunicationSetup(DeviceDataModel DDM)
+        {
+            DoClear = DDM.DoClear;
+            Host = DDM.Host;
+            Port = DDM.Port;
+            UserName = DDM.UserName;
+            Password = DDM.Password;
+            Delay = DDM.Delay;
+        }
 
         public void ClearStatus()
         {
 
             BellConstants.IsSuccess = false;
             BellConstants.ErrorMessage = string.Empty;
-        } 
+        }
 
         public string DownloadURL
         {
@@ -86,7 +96,7 @@ namespace BellScheduler
 
             using (var client = new WebClient())
             {
-                client.Credentials = new System.Net.NetworkCredential(UserName,Password);
+                client.Credentials = new System.Net.NetworkCredential(UserName, Password);
                 try
                 {
                     content = client.DownloadString(DownloadURL);
@@ -98,12 +108,12 @@ namespace BellScheduler
                     BellConstants.ErrorMessage = WE.Message + Environment.NewLine + BellConstants.BellSettingIssue;
                     return Result;
                 }
-                
+
             }
-           
+
             // This might need later if the html page change their structure, for now we are getting as a raw string i.e. content
             //var doc = new HtmlAgilityPack.HtmlDocument();
-            Result = content.Substring(content.IndexOf("#Start")).Replace("<BR>",Environment.NewLine);
+            Result = content.Substring(content.IndexOf("#Start")).Replace("<BR>", Environment.NewLine);
             return Result;
         }
 
@@ -115,24 +125,25 @@ namespace BellScheduler
             ClearStatus();
 
             // Reset before adding any bells to the system
-            using (var client = new WebClient())
+            if (DoClear)
             {
-                client.Credentials = new System.Net.NetworkCredential(UserName, Password);
-                try
+                using (var client = new WebClient())
                 {
-                    content = client.DownloadString(ResetURL);
-                    
+                    client.Credentials = new System.Net.NetworkCredential(UserName, Password);
+                    try
+                    {
+                        content = client.DownloadString(ResetURL);
+                    }
+                    catch (WebException WE)
+                    {
+                        BellConstants.IsSuccess = false;
+                        BellConstants.ErrorMessage = WE.Message + Environment.NewLine + BellConstants.BellSettingIssue;
+                        return Result;
+                    }
                 }
-                catch (WebException WE)
-                {
-                    BellConstants.IsSuccess = false;
-                    BellConstants.ErrorMessage = WE.Message + Environment.NewLine + BellConstants.BellSettingIssue;
-                    return Result;
-
-                }
-
             }
 
+            int LineNumber = 1;
             foreach (var item in Abells)
             {
                 using (var client = new WebClient())
@@ -140,29 +151,91 @@ namespace BellScheduler
                     client.Credentials = new System.Net.NetworkCredential(UserName, Password);
                     try
                     {
-                        content = client.DownloadString(UploadURL+item);
+                        content = client.DownloadString(UploadURL + item);
                         BellConstants.IsSuccess = true;
                     }
                     catch (WebException WE)
                     {
 
                         BellConstants.IsSuccess = false;
-                        BellConstants.ErrorMessage = WE.Message + Environment.NewLine + BellConstants.BellSettingIssue;
+                       // BellConstants.ErrorMessage = WE.Message + Environment.NewLine + BellConstants.BellSettingIssue;
+                        Logger.LogObj.Info("There is some error while uploading at line number " + LineNumber + "Of file "+ ScheduleDataManager.BellListFilePath + WE.Message);                        // Error Logging
                     }
 
                 }
                 // Adding the delay
                 Thread.Sleep(Delay);
-               
+                LineNumber++;
             }
             return Result;
 
+        }
+
+        public String UploadBellsToMultipleDevice(List<string> Abells, List<DeviceData> DeviceList)
+        {
+            String Result = string.Empty;
+            String content = string.Empty;
+
+            ClearStatus();
+
+            foreach (var DeviceData in DeviceList)
+            {
+                AssignCommunicationSetup(DeviceData.deviceDataModel);
+
+                if (DoClear)
+                {
+                    // Reset before adding any bells to the system
+                    using (var client = new WebClient())
+                    {
+                        client.Credentials = new System.Net.NetworkCredential(UserName, Password);
+                        try
+                        {
+                            content = client.DownloadString(ResetURL);
+                        }
+                        catch (WebException WE)
+                        {
+                            BellConstants.IsSuccess = false;
+                            BellConstants.ErrorMessage = WE.Message + Environment.NewLine + BellConstants.BellSettingIssue +Environment.NewLine +"DeviceSetup Number:"+ DeviceData.deviceDataModel.SerialNumber ;
+                            return Result;
+                        }
+                    }
+                }
+
+                int LineNumber = 1;
+                foreach (var item in Abells)
+                {
+                    using (var client = new WebClient())
+                    {
+                        client.Credentials = new System.Net.NetworkCredential(UserName, Password);
+                        try
+                        {
+                            content = client.DownloadString(UploadURL + item);
+                            BellConstants.IsSuccess = true;
+                        }
+                        catch (WebException WE)
+                        {
+
+                            BellConstants.IsSuccess = false;
+                            BellConstants.ErrorMessage = WE.Message + Environment.NewLine + BellConstants.BellSettingIssue;
+                            Logger.LogObj.Info("There is some error while uploading at line number " + LineNumber + "Of file " + ScheduleDataManager.BellListFilePath + WE.Message);
+                        }
+
+                    }
+                    // Adding the delay
+                    Thread.Sleep(Delay);
+                    LineNumber++;
+                }
+            }
+           
+            return Result;
+            
         }
 
         public void SaveSettings()
         {
             RegistryKey key = Registry.CurrentUser.CreateSubKey(BellConstants.BellSettingsRegKey);
 
+            key.SetValue(BellConstants.Clear, DoClear);
             key.SetValue(BellConstants.Host, Host);
             key.SetValue(BellConstants.Port, Port);
             key.SetValue(BellConstants.Protocol, Protocol);
@@ -185,6 +258,7 @@ namespace BellScheduler
                 //code if key Exist
             }
 
+            DoClear = Convert.ToBoolean(Registry.GetValue(key.Name, BellConstants.Clear, DoClear));
             Host = Registry.GetValue(key.Name, BellConstants.Host, Host).ToString();
             Port = Registry.GetValue(key.Name, BellConstants.Port, Port).ToString();
             Protocol = Registry.GetValue(key.Name, BellConstants.Protocol, Protocol).ToString();

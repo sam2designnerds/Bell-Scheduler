@@ -18,10 +18,11 @@ namespace BellScheduler
         }
 
         private void btnOk_Click(object sender, EventArgs e)
-        { 
+        {
+            BellComunication.ObjCommunication.DoClear = chkClear.Checked;
             BellComunication.ObjCommunication.Host = txtHost.Text;
             BellComunication.ObjCommunication.Port = txtPort.Text;
-            BellComunication.ObjCommunication.Protocol = cmbProtocol.Text;
+           // BellComunication.ObjCommunication.Protocol = cmbProtocol.Text;
             BellComunication.ObjCommunication.UserName = txtUserName.Text;
             BellComunication.ObjCommunication.Password = txtPassword.Text;
             int delay;
@@ -44,13 +45,14 @@ namespace BellScheduler
         private void SetupForm_Load(object sender, EventArgs e)
         {
             BellComunication.ObjCommunication.RetriveSettings();
+            chkClear.Checked = BellComunication.ObjCommunication.DoClear;
             txtHost.Text = BellComunication.ObjCommunication.Host;
             txtPort.Text = BellComunication.ObjCommunication.Port;
             txtUserName.Text = BellComunication.ObjCommunication.UserName;
             txtPassword.Text = BellComunication.ObjCommunication.Password;
             txtDelay.Text = BellComunication.ObjCommunication.Delay.ToString();
 
-            cmbProtocol.SelectedIndex = cmbProtocol.FindStringExact(BellComunication.ObjCommunication.Protocol);
+           // cmbProtocol.SelectedIndex = cmbProtocol.FindStringExact(BellComunication.ObjCommunication.Protocol);
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

@@ -52,6 +52,7 @@ namespace BellScheduler
             rtbContent.Lines = BellContent.ObjContent.Content;
             BellContent.ObjContent.IsChanged = false;
             BellComObj.SaveSettings();
+            rtbContent.Visible = true;
         }
         public void Save(Boolean SaveAs = false)
         {
@@ -96,6 +97,8 @@ namespace BellScheduler
         public BellForm()
         {
             InitializeComponent();
+            rtbContent.Visible = false;
+            panel1.Visible = false;
         }
 
         public void OpenFile()
@@ -115,6 +118,36 @@ namespace BellScheduler
                 catch (IOException)
                 {
                 }
+            }
+        }
+
+        public void UpdateDeviceListUI()
+        {
+            pnlDeviceList.Controls.Clear();
+            for (int i = 0; i < DeviceDataManager.DeviceDataUI.Count; i++)
+            {
+                DeviceData TempDataUi = DeviceDataManager.DeviceDataUI[i];
+                DeviceDataModel DDM = new DeviceDataModel();
+                DDM = TempDataUi.deviceDataModel;
+                DDM.SerialNumber = i + 1;
+                TempDataUi.deviceDataModel = DDM;
+                TempDataUi.Location = new Point(0,  (i * 33));
+                pnlDeviceList.Controls.Add(TempDataUi);
+            }
+        }
+
+        public void UpdateBellListUI()
+        {
+            pnlScheduleContainer.Controls.Clear();
+            for (int i = 0; i < ScheduleDataManager.BellDataUI.Count; i++)
+            {
+                ScheduleData TempDataUi = ScheduleDataManager.BellDataUI[i];
+                ScheduleDataModel SDM = new ScheduleDataModel();
+                SDM = TempDataUi.scheduleDM;
+                SDM.SerialNumber = i + 1;
+                TempDataUi.scheduleDM = SDM;
+                TempDataUi.Location = new Point(0,  (i * 38));
+                pnlScheduleContainer.Controls.Add(TempDataUi);
             }
         }
         private void btnDownload_Click(object sender, EventArgs e)
@@ -167,6 +200,7 @@ namespace BellScheduler
         private void downloadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Download();
+            
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -255,8 +289,8 @@ namespace BellScheduler
 
             //testing is going on
 
-            DeviceData t1 = new DeviceData();
-            Data.Add(t1);
+            //DeviceData t1 = new DeviceData();
+            //Data.Add(t1);
 
             // for Schedule data
 
@@ -279,11 +313,230 @@ namespace BellScheduler
             for (int i = 0; i < Data.Count; i++)
             {
                 //10+(i* Data[i].Height -5)
-                Data[i].Location = new Point(10, 5+(i * 28));
+                Data[i].Location = new Point(0,  (i * 33));
 
-                Data[i].DeviceNumber = i + 1;
-                panel2.Controls.Add(Data[i]);
+                DeviceDataModel deviceDM = new DeviceDataModel();
+                deviceDM.SerialNumber = i + 1;
+                Data[i].deviceDataModel = deviceDM;
+             //   Data[i].deviceDataModel.SerialNumber = i + 1;
+                pnlDeviceList.Controls.Add(Data[i]);
             }
+
+            //FrmScheduleData test = new FrmScheduleData();
+            //test.ShowDialog();
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tbDevices_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnOpenDeviceList_Click(object sender, EventArgs e)
+        {
+            if ((DeviceDataManager.IsDirty) &&
+                (MessageBox.Show("Do you want to save the content?", "Want to Save", MessageBoxButtons.YesNo) == DialogResult.Yes))
+            {
+                DeviceDataManager.SaveDataToCSV();
+            }
+
+            string filePath = String.Empty;
+           // List<DeviceDataModel> deviceDataList = new List<DeviceDataModel>();
+            List<DeviceData> dataUI = new List<DeviceData>();
+            OpenFileDialog OFDialog = new OpenFileDialog();
+            
+            DialogResult result = OFDialog.ShowDialog(); // Show the dialog.
+            OFDialog.DefaultExt = BellConstants.BellCSVExtention;
+            if (result == DialogResult.OK) // Test result.
+            {
+                filePath = OFDialog.FileName;
+                DeviceDataManager.DeviceListFilePath = filePath;
+                DeviceDataManager.LoadData();
+            }
+            dataUI = DeviceDataManager.DeviceDataUI;
+            pnlDeviceList.Controls.Clear();
+            for (int i = 0; i < dataUI.Count; i++)
+            {
+                DeviceData TempDataUi = dataUI[i];
+                DeviceDataModel DDM = new DeviceDataModel();
+                DDM =TempDataUi.deviceDataModel;
+                DDM.SerialNumber = i + 1;
+                TempDataUi.deviceDataModel = DDM;
+                TempDataUi.Location = new Point(0,  (i * 33));
+                TempDataUi.Controls["btnDelete"].Click += DeleteDeviceFromList;
+                TempDataUi.MakeDirty += DeviceDataManager.ActionMakeDirty;
+
+                pnlDeviceList.Controls.Add(TempDataUi);
+            }
+        }
+
+        private void btnSaveDeviceList_Click(object sender, EventArgs e)
+        {
+           
+            DeviceDataManager.SaveDataToCSV();
+        }
+
+        private void btnAddDevice_Click(object sender, EventArgs e)
+        {
+            pnlDeviceList.Controls.Add(DeviceDataManager.AddEmptyDeviceData(DeleteDeviceFromList));
+        }
+
+        public void DeleteDeviceFromList(object sender, EventArgs e)
+        {
+            int SerialNumber = ((DeviceData)((Control)sender).Parent).deviceDataModel.SerialNumber;
+            DeviceDataManager.DeleteDeviceData(SerialNumber);
+            UpdateDeviceListUI();
+        }
+
+        private void btnCloseDeviceList_Click(object sender, EventArgs e)
+        {
+            if ((DeviceDataManager.IsDirty || string.IsNullOrEmpty(DeviceDataManager.DeviceListFilePath)) &&
+               (MessageBox.Show("Do you want to save the content?", "Want to Save", MessageBoxButtons.YesNo) == DialogResult.Yes))
+            {
+                DeviceDataManager.SaveDataToCSV();
+            }
+
+            pnlDeviceList.Controls.Clear();
+            DeviceDataManager.DeviceDataUI.Clear();
+            DeviceDataManager.ResetDirtyFlag();
+            this.Invalidate();
+        }
+
+
+        public void DeleteScheduleFromList(object sender, EventArgs e)
+        {
+            int SerialNumber = ((ScheduleData)((Control)sender).Parent).scheduleDM.SerialNumber;
+            ScheduleDataManager.DeleteScheduleData(SerialNumber);
+            UpdateBellListUI();
+            
+        }
+
+        private void btnOpenBellList_Click(object sender, EventArgs e)
+        {
+            if ((ScheduleDataManager.IsDirty) &&
+                 (MessageBox.Show("Do you want to save the content?", "Want to Save", MessageBoxButtons.YesNo) == DialogResult.Yes))
+            {
+               ScheduleDataManager.SaveDataToCSV();
+            }
+
+            string filePath = String.Empty;
+            List<ScheduleData> dataUI = new List<ScheduleData>();
+            OpenFileDialog OFDialog = new OpenFileDialog();
+
+            DialogResult result = OFDialog.ShowDialog(); // Show the dialog.
+            OFDialog.DefaultExt = BellConstants.BellCSVExtention;
+            if (result == DialogResult.OK && !string.IsNullOrEmpty(OFDialog.FileName)) 
+            {
+                filePath = OFDialog.FileName;
+
+                ScheduleDataManager.BellListFilePath = filePath;
+                ScheduleDataManager.LoadData();
+
+                dataUI = ScheduleDataManager.BellDataUI;
+                pnlScheduleContainer.Controls.Clear();
+                for (int i = 0; i < dataUI.Count; i++)
+                {
+                    ScheduleData TempDataUi = dataUI[i];
+                    ScheduleDataModel SDM = new ScheduleDataModel();
+                    SDM = TempDataUi.scheduleDM;
+                    SDM.SerialNumber = i + 1;
+                    TempDataUi.scheduleDM = SDM;
+                    TempDataUi.Location = new Point(0, (i * 38));
+                    TempDataUi.Controls["btnDelete"].Click += DeleteScheduleFromList;
+                    TempDataUi.MakeDirty += ScheduleDataManager.ActionMakeDirty;
+                    pnlScheduleContainer.Controls.Add(TempDataUi);
+                }
+
+                ScheduleDataManager.ResetDirtyFlag();
+            }
+           
+        }
+
+        private void btnAddBellData_Click(object sender, EventArgs e)
+        {
+            pnlScheduleContainer.Controls.Add(ScheduleDataManager.AddEmptyScheduleData(DeleteScheduleFromList));
+        }
+
+        private void btnSaveScheduleData_Click(object sender, EventArgs e)
+        {
+            
+            ScheduleDataManager.SaveDataToCSV();
+        }
+
+        private void btnCloseBellList_Click(object sender, EventArgs e)
+        {
+            if ((ScheduleDataManager.IsDirty || string.IsNullOrEmpty(ScheduleDataManager.BellListFilePath)) &&
+                (MessageBox.Show("Do you want to save the content?", "Want to Save", MessageBoxButtons.YesNo) == DialogResult.Yes))
+            {
+                ScheduleDataManager.SaveDataToCSV();
+            }
+
+            pnlScheduleContainer.Controls.Clear();
+            ScheduleDataManager.BellDataUI.Clear();
+            ScheduleDataManager.ResetDirtyFlag();
+            this.Invalidate();
+
+        }
+
+        private void btnDownloadBellList_Click(object sender, EventArgs e)
+        {
+            if ((ScheduleDataManager.IsDirty) &&
+                (MessageBox.Show("Do you want to save the content?", "Want to Save", MessageBoxButtons.YesNo) == DialogResult.Yes))
+            {
+                ScheduleDataManager.SaveDataToCSV();
+            }
+
+            BellComunication BellComObj = BellComunication.ObjCommunication;
+            string content = BellComObj.DownloadString();
+            if (!BellConstants.IsSuccess)
+            {
+                if (string.IsNullOrEmpty(BellConstants.ErrorMessage))
+                {
+                    MessageBox.Show("Information is not downloaded due some unknown reason, please try again.");
+                }
+                else
+                {
+                    MessageBox.Show(BellConstants.ErrorMessage);
+                }
+                return;
+            }
+            
+            string[] splitSeparator = { Environment.NewLine };
+            string[] Content = content.Split(splitSeparator, StringSplitOptions.RemoveEmptyEntries);
+            {
+                
+                ScheduleDataManager.LoadData(Content);
+                List<ScheduleData> dataUI = new List<ScheduleData>();
+                dataUI = ScheduleDataManager.BellDataUI;
+                pnlScheduleContainer.Controls.Clear();
+                for (int i = 0; i < dataUI.Count; i++)
+                {
+                    ScheduleData TempDataUi = dataUI[i];
+                    ScheduleDataModel SDM = new ScheduleDataModel();
+                    SDM = TempDataUi.scheduleDM;
+                    SDM.SerialNumber = i + 1;
+                    TempDataUi.scheduleDM = SDM;
+                    TempDataUi.Location = new Point(0, (i * 38));
+                    TempDataUi.Controls["btnDelete"].Click += DeleteScheduleFromList;
+                    TempDataUi.MakeDirty += ScheduleDataManager.ActionMakeDirty;
+                    pnlScheduleContainer.Controls.Add(TempDataUi);
+                }
+            }
+
+        }
+
+        private void btnUploadBell_Click(object sender, EventArgs e)
+        {
+            BellComunication.ObjCommunication.UploadBells(ScheduleDataManager.GetListOfBells());
+        }
+
+        private void btnMultiDeviceUpload_Click(object sender, EventArgs e)
+        {
+            BellComunication.ObjCommunication.UploadBellsToMultipleDevice(ScheduleDataManager.GetListOfBells(), DeviceDataManager.DeviceDataUI);
         }
     }
 }

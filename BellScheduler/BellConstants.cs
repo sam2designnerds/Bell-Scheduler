@@ -8,7 +8,8 @@ namespace BellScheduler
 {
     public static class BellConstants
     {
-      public static string BellScheduleFileExtention = "bs";
+      public static string BellScheduleFileExtention = "txt";
+        public static string BellCSVExtention = "csv";
         public static string HelpMessage = 
             @"ParameterName
             1. Task--> Upload/Download: This accept Upload or Download and perform accordingly
@@ -18,7 +19,8 @@ namespace BellScheduler
 
         public static string Upload = "upload";
         public static string Download = "download";
-        
+
+        public static string Clear = "Clear";
         public static string Host = "Host";
         public static string Port = "Port";
         public static string Protocol = "Protocol";

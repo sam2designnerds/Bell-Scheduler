@@ -32,8 +32,6 @@
             this.txtHost = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtPort = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cmbProtocol = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.txtUserName = new System.Windows.Forms.TextBox();
@@ -44,6 +42,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.txtDelay = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.chkClear = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -65,7 +64,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(37, 62);
+            this.label2.Location = new System.Drawing.Point(37, 64);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(69, 17);
             this.label2.TabIndex = 2;
@@ -73,36 +72,15 @@
             // 
             // txtPort
             // 
-            this.txtPort.Location = new System.Drawing.Point(112, 62);
+            this.txtPort.Location = new System.Drawing.Point(112, 64);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(142, 22);
             this.txtPort.TabIndex = 3;
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(42, 97);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(64, 17);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Protocol:";
-            // 
-            // cmbProtocol
-            // 
-            this.cmbProtocol.FormattingEnabled = true;
-            this.cmbProtocol.Items.AddRange(new object[] {
-            "Bells",
-            "Test1",
-            "Test2"});
-            this.cmbProtocol.Location = new System.Drawing.Point(113, 97);
-            this.cmbProtocol.Name = "cmbProtocol";
-            this.cmbProtocol.Size = new System.Drawing.Size(141, 24);
-            this.cmbProtocol.TabIndex = 5;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(27, 131);
+            this.label4.Location = new System.Drawing.Point(26, 103);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(79, 17);
             this.label4.TabIndex = 6;
@@ -112,7 +90,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(33, 161);
+            this.label5.Location = new System.Drawing.Point(32, 142);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(73, 17);
             this.label5.TabIndex = 7;
@@ -120,14 +98,14 @@
             // 
             // txtUserName
             // 
-            this.txtUserName.Location = new System.Drawing.Point(113, 131);
+            this.txtUserName.Location = new System.Drawing.Point(112, 103);
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(141, 22);
             this.txtUserName.TabIndex = 8;
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(113, 161);
+            this.txtPassword.Location = new System.Drawing.Point(112, 142);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(141, 22);
             this.txtPassword.TabIndex = 9;
@@ -164,7 +142,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(58, 187);
+            this.label6.Location = new System.Drawing.Point(57, 181);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(48, 17);
             this.label6.TabIndex = 13;
@@ -172,7 +150,7 @@
             // 
             // txtDelay
             // 
-            this.txtDelay.Location = new System.Drawing.Point(113, 187);
+            this.txtDelay.Location = new System.Drawing.Point(112, 181);
             this.txtDelay.Name = "txtDelay";
             this.txtDelay.Size = new System.Drawing.Size(141, 22);
             this.txtDelay.TabIndex = 14;
@@ -180,18 +158,29 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(261, 191);
+            this.label7.Location = new System.Drawing.Point(259, 184);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(38, 17);
             this.label7.TabIndex = 15;
             this.label7.Text = "(mS)";
+            // 
+            // chkClear
+            // 
+            this.chkClear.AutoSize = true;
+            this.chkClear.Location = new System.Drawing.Point(305, 64);
+            this.chkClear.Name = "chkClear";
+            this.chkClear.Size = new System.Drawing.Size(63, 21);
+            this.chkClear.TabIndex = 16;
+            this.chkClear.Text = "Clear";
+            this.chkClear.UseVisualStyleBackColor = true;
             // 
             // SetupForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.ClientSize = new System.Drawing.Size(431, 297);
+            this.ClientSize = new System.Drawing.Size(452, 297);
+            this.Controls.Add(this.chkClear);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.txtDelay);
             this.Controls.Add(this.label6);
@@ -202,8 +191,6 @@
             this.Controls.Add(this.txtUserName);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.cmbProtocol);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.txtPort);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtHost);
@@ -223,8 +210,6 @@
         private System.Windows.Forms.TextBox txtHost;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtPort;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox cmbProtocol;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtUserName;
@@ -235,5 +220,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtDelay;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckBox chkClear;
     }
 }
