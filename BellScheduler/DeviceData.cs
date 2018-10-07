@@ -62,13 +62,22 @@ namespace BellScheduler
             }
         }
        
-     
+       
         public DeviceData()
         {
             _deviceDM = new DeviceDataModel();
            
             InitializeComponent();
 
+        }
+
+        public void UnCheckForDownload()
+        {
+            chkDownload.Checked = false;
+        }
+        public void SelectForDownload()
+        {
+            chkDownload.Checked = true;
         }
     }
 

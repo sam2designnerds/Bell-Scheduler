@@ -15,6 +15,7 @@ namespace BellScheduler
         public string BellNumbers { get; set; }
         public string BellDays { get; set; }
 
+        public bool IsDateRequired { get; set; }
         public DateTime BellDate { get; set; }
 
         public int BellDuration { get; set; }

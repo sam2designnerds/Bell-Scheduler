@@ -368,6 +368,7 @@ namespace BellScheduler
                 TempDataUi.deviceDataModel = DDM;
                 TempDataUi.Location = new Point(0,  (i * 33));
                 TempDataUi.Controls["btnDelete"].Click += DeleteDeviceFromList;
+                TempDataUi.Controls["chkDownload"].Click += SelectDownloadFromList;
                 TempDataUi.MakeDirty += DeviceDataManager.ActionMakeDirty;
 
                 pnlDeviceList.Controls.Add(TempDataUi);
@@ -382,7 +383,7 @@ namespace BellScheduler
 
         private void btnAddDevice_Click(object sender, EventArgs e)
         {
-            pnlDeviceList.Controls.Add(DeviceDataManager.AddEmptyDeviceData(DeleteDeviceFromList));
+            pnlDeviceList.Controls.Add(DeviceDataManager.AddEmptyDeviceData(DeleteDeviceFromList, SelectDownloadFromList));
         }
 
         public void DeleteDeviceFromList(object sender, EventArgs e)
@@ -390,6 +391,16 @@ namespace BellScheduler
             int SerialNumber = ((DeviceData)((Control)sender).Parent).deviceDataModel.SerialNumber;
             DeviceDataManager.DeleteDeviceData(SerialNumber);
             UpdateDeviceListUI();
+        }
+
+        public void SelectDownloadFromList(object sender, EventArgs e)
+        {
+            int SerialNumber = ((DeviceData)((Control)sender).Parent).deviceDataModel.SerialNumber;
+           if (((CheckBox)((Control)sender)).Checked)
+            {
+                DeviceDataManager.SelectDownloadDevice(SerialNumber);
+            }
+               
         }
 
         private void btnCloseDeviceList_Click(object sender, EventArgs e)
@@ -485,7 +496,7 @@ namespace BellScheduler
         private void btnDownloadBellList_Click(object sender, EventArgs e)
         {
             if ((ScheduleDataManager.IsDirty) &&
-                (MessageBox.Show("Do you want to save the content?", "Want to Save", MessageBoxButtons.YesNo) == DialogResult.Yes))
+                (MessageBox.Show("Do you want to save the existing content?", "Want to Save", MessageBoxButtons.YesNo) == DialogResult.Yes))
             {
                 ScheduleDataManager.SaveDataToCSV();
             }
@@ -538,5 +549,13 @@ namespace BellScheduler
         {
             BellComunication.ObjCommunication.UploadBellsToMultipleDevice(ScheduleDataManager.GetListOfBells(), DeviceDataManager.DeviceDataUI);
         }
+
+        private void BellForm_Load(object sender, EventArgs e)
+        {
+             pnlTestControls.Visible = false;
+            menuStrip1.Visible = false;
+        }
+
+      
     }
 }

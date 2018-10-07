@@ -53,14 +53,14 @@ namespace BellScheduler
         public string GetBellDays()
         {
             string Result = string.Empty;
-            //Result += (chkDay1.Checked ? "1" : "0");
-            //Result += (chkDay2.Checked ? "1" : "0");
-            //Result += (chkDay3.Checked ? "1" : "0");
-            //Result += (chkDay4.Checked ? "1" : "0");
-            //Result += (chkDay5.Checked ? "1" : "0");
-            //Result += (chkDay6.Checked ? "1" : "0");
-            //Result += (chkDay7.Checked ? "1" : "0");
-            Result = "1010101";
+            Result += (chkDay1.Checked ? "1" : "0");
+            Result += (chkDay2.Checked ? "1" : "0");
+            Result += (chkDay3.Checked ? "1" : "0");
+            Result += (chkDay4.Checked ? "1" : "0");
+            Result += (chkDay5.Checked ? "1" : "0");
+            Result += (chkDay6.Checked ? "1" : "0");
+            Result += (chkDay7.Checked ? "1" : "0");
+            // Result = "1010101";
 
             return Result;
         }
@@ -91,6 +91,7 @@ namespace BellScheduler
                      ||  _ScheduleDM.BellTime != dtpTime.Value
                      ||  _ScheduleDM.BellNumbers != GetBellNumbers()
                      ||  _ScheduleDM.BellDays != GetBellDays()
+                     ||  _ScheduleDM.IsDateRequired != chkDate.Checked
                      ||   _ScheduleDM.BellDate != dtpDate.Value
                      ||  _ScheduleDM.BellDuration != Convert.ToInt32(txtDuration.Text)
                      ||  _ScheduleDM.PulseWidth != cmbPulseWidth.Text
@@ -104,6 +105,7 @@ namespace BellScheduler
                 _ScheduleDM.BellTime = dtpTime.Value;
                 _ScheduleDM.BellNumbers = GetBellNumbers();
                 _ScheduleDM.BellDays = GetBellDays();
+                _ScheduleDM.IsDateRequired = chkDate.Checked;
                 _ScheduleDM.BellDate = dtpDate.Value;
                 _ScheduleDM.BellDuration = Convert.ToInt32(txtDuration.Text);
                 _ScheduleDM.PulseWidth = cmbPulseWidth.Text;
@@ -120,6 +122,7 @@ namespace BellScheduler
                 dtpTime.Value = value.BellTime;
                 SetBellNumbers(value.BellNumbers);
                 SetBellDays(value.BellDays);
+                chkDate.Checked = value.IsDateRequired;
                 dtpDate.Value = value.BellDate;
                 txtDuration.Text = value.BellDuration.ToString();
                 cmbPulseWidth.SelectedIndex = cmbPulseWidth.FindStringExact(value.PulseWidth);
@@ -142,6 +145,16 @@ namespace BellScheduler
             InitializeComponent();
         }
 
+        private void chkDate_CheckedChanged(object sender, EventArgs e)
+        {
+
+            dtpDate.Enabled = chkDate.Checked;
             
+        }
+
+        private void ScheduleData_Paint(object sender, PaintEventArgs e)
+        {
+            dtpDate.Enabled = chkDate.Checked;
+        }
     }
 }

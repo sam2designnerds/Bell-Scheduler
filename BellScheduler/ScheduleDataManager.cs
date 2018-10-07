@@ -38,27 +38,31 @@ namespace BellScheduler
         }
         
 
-        public static DateTime GetCorrectTime(string[] values)
+        public static DateTime GetCorrectTime(string[] values, out bool IsDateRequired)
         {
 
           
             DateTime TempBellDate;
         TimeSpan TempTime;
         string datetime, date, time = string.Empty;
-
-        date = values[4] + "-" + values[5] + "-" + values[6];
+            IsDateRequired = true;
+            date = values[4] + "-" + values[5] + "-" + values[6];
             if    (Convert.ToInt32(values[4]) == 0
                 || Convert.ToInt32(values[5]) == 0
                 || Convert.ToInt32(values[6]) == 0)
             {
                // date = DateTime.Now.Date.ToString("yyyy-MM-dd");
                 TempBellDate = DateTime.Now;
+                IsDateRequired = false;
+               // Date field should be disabled.
+
             }
             else
             {
               if(!DateTime.TryParse(date, out TempBellDate))
                 {
                     TempBellDate = DateTime.Now;
+                    IsDateRequired = false;
                 }
             }
 
@@ -119,8 +123,8 @@ namespace BellScheduler
             //DateTime.ParseExact("2014-01-01 23:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
             //name,hours,minutes,seconds,year,month,day,relays(bells),day of week,duration,pw type,use,once
 
-
-            DateTime TempBellDateTime = GetCorrectTime(values);
+            bool IsDateRequired = false;
+            DateTime TempBellDateTime = GetCorrectTime(values,out IsDateRequired);
 
 
             SDM.SerialNumber = 0;
@@ -128,6 +132,7 @@ namespace BellScheduler
             SDM.BellTime = TempBellDateTime;
             SDM.BellNumbers = values[7].ToString();
             SDM.BellDays = values[8].ToString();
+            SDM.IsDateRequired = IsDateRequired;
             SDM.BellDate = TempBellDateTime;
             SDM.BellDuration = Convert.ToInt32(values[9]);
             SDM.PulseWidth = values[10].ToString();
@@ -176,14 +181,27 @@ namespace BellScheduler
                 {
                     List<string> Props = new List<string>();
                     //name,hours,minutes,seconds,year,month,day,relays(bells),day of week,duration,pw type,use,once
+                    string Year, Month, Day;
+
+                    if (item.scheduleDM.IsDateRequired)
+                    {
+                      Year = item.scheduleDM.BellDate.Year.ToString();
+                      Month = item.scheduleDM.BellDate.Month.ToString();
+                      Day = item.scheduleDM.BellDate.Day.ToString();
+                    }
+                    else
+                    {
+                        Year = "0"; Month = "0"; Day = "0";
+                    }
+
 
                     Props.Add(item.scheduleDM.BellName);
                     Props.Add(item.scheduleDM.BellTime.Hour.ToString());
                     Props.Add(item.scheduleDM.BellTime.Minute.ToString());
                     Props.Add(item.scheduleDM.BellTime.Second.ToString());
-                    Props.Add(item.scheduleDM.BellDate.Year.ToString());
-                    Props.Add(item.scheduleDM.BellDate.Month.ToString());
-                    Props.Add(item.scheduleDM.BellDate.Day.ToString());
+                    Props.Add(Year);
+                    Props.Add(Month);
+                    Props.Add(Day);
                     Props.Add(item.scheduleDM.BellNumbers);
                     Props.Add(item.scheduleDM.BellDays);
                     Props.Add(item.scheduleDM.BellDuration.ToString());
@@ -202,11 +220,12 @@ namespace BellScheduler
             ScheduleData EmptyData = new ScheduleData();
             ScheduleDataModel SDM = new ScheduleDataModel();
             SDM.SerialNumber = BellDataUI.Count + 1;
+            SDM.IsDateRequired = false;
             SDM.BellDate = DateTime.Now;
             SDM.BellTime = DateTime.Now;
             SDM.BellNumbers = string.Empty;
             SDM.BellDays = string.Empty;
-            EmptyData.scheduleDM = SDM;
+            EmptyData.scheduleDM = SDM;           
             EmptyData.Location = new Point(0, (BellDataUI.Count * 38));
             EmptyData.Controls["btnDelete"].Click += aEventHandler;
             EmptyData.MakeDirty += ActionMakeDirty;
@@ -260,6 +279,8 @@ namespace BellScheduler
             return Result;
 
         }
+
+       
 
     }
 }

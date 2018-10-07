@@ -79,12 +79,18 @@ namespace BellScheduler
                 if (SFDialog.ShowDialog() == DialogResult.OK)
                 {
                    DeviceListFilePath = SFDialog.FileName;
-                    WriteCSV();
-                    ResetDirtyFlag();
+                   
+                }
+                else
+                {
+                    return;
                 }
 
             }
-           
+
+            WriteCSV();
+            ResetDirtyFlag();
+
         }
 
         public static void WriteCSV()
@@ -112,14 +118,15 @@ namespace BellScheduler
             }
         }
 
-        public static DeviceData AddEmptyDeviceData( EventHandler aEventHandler)
+        public static DeviceData AddEmptyDeviceData( EventHandler aDeleteEventHandler, EventHandler aSelectDownloadEventHandler)
         {
             DeviceData EmptyData = new DeviceData();
             DeviceDataModel DDM = new DeviceDataModel();
             DDM.SerialNumber = DeviceDataUI.Count + 1;
             EmptyData.deviceDataModel = DDM;
             EmptyData.Location = new Point(0, (DeviceDataUI.Count * 33));
-            EmptyData.Controls["btnDelete"].Click += aEventHandler;
+            EmptyData.Controls["btnDelete"].Click += aDeleteEventHandler;
+            EmptyData.Controls["chkDownload"].Click += aSelectDownloadEventHandler;
             EmptyData.MakeDirty += ActionMakeDirty;
             DeviceDataUI.Add(EmptyData);
             return EmptyData;
@@ -139,6 +146,18 @@ namespace BellScheduler
         public static void ResetDirtyFlag()
         {
             IsDirty = false;
+        }
+
+        public static void SelectDownloadDevice(int aSerialNumber)
+        {
+            foreach (var item in DeviceDataUI)
+            {
+                item.UnCheckForDownload();
+   
+            }
+
+            DeviceDataUI[aSerialNumber - 1].SelectForDownload();
+            BellComunication.ObjCommunication.AssignCommunicationSetup(DeviceDataUI[aSerialNumber - 1].deviceDataModel);
         }
     }
 }
