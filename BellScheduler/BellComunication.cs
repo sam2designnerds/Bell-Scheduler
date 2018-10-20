@@ -90,6 +90,7 @@ namespace BellScheduler
 
         public String DownloadString()
         {
+            Logger.LogObj.Debug("Start Downloading");
             String Result = string.Empty;
             String content = string.Empty;
             ClearStatus();
@@ -106,6 +107,8 @@ namespace BellScheduler
                 {
                     BellConstants.IsSuccess = false;
                     BellConstants.ErrorMessage = WE.Message + Environment.NewLine + BellConstants.BellSettingIssue;
+                    Logger.LogObj.Error(BellConstants.ErrorMessage);
+                    Logger.LogObj.Info("Attempted Download URL is: "+ DownloadURL);
                     return Result;
                 }
 
@@ -114,11 +117,13 @@ namespace BellScheduler
             // This might need later if the html page change their structure, for now we are getting as a raw string i.e. content
             //var doc = new HtmlAgilityPack.HtmlDocument();
             Result = content.Substring(content.IndexOf("#Start")).Replace("<BR>", Environment.NewLine);
+            Logger.LogObj.Debug("End Downloading");
             return Result;
         }
 
         public String UploadBells(List<string> Abells)
         {
+           
             String Result = string.Empty;
             String content = string.Empty;
 
@@ -159,7 +164,7 @@ namespace BellScheduler
 
                         BellConstants.IsSuccess = false;
                        // BellConstants.ErrorMessage = WE.Message + Environment.NewLine + BellConstants.BellSettingIssue;
-                        Logger.LogObj.Info("There is some error while uploading at line number " + LineNumber + "Of file "+ ScheduleDataManager.BellListFilePath + WE.Message);                        // Error Logging
+                        Logger.LogObj.Info("There is some error while uploading at line number " + LineNumber + " Of file "+ ScheduleDataManager.BellListFilePath + WE.Message);                        // Error Logging
                     }
 
                 }
@@ -167,12 +172,18 @@ namespace BellScheduler
                 Thread.Sleep(Delay);
                 LineNumber++;
             }
+           
             return Result;
+
 
         }
 
         public String UploadBellsToMultipleDevice(List<string> Abells, List<DeviceData> DeviceList)
         {
+            Logger.LogObj.Debug("Uploading Started");
+            var Performance = DateTime.Now;
+            double TotalDelay = 0;
+
             String Result = string.Empty;
             String content = string.Empty;
 
@@ -196,6 +207,8 @@ namespace BellScheduler
                         {
                             BellConstants.IsSuccess = false;
                             BellConstants.ErrorMessage = WE.Message + Environment.NewLine + BellConstants.BellSettingIssue +Environment.NewLine +"DeviceSetup Number:"+ DeviceData.deviceDataModel.SerialNumber ;
+                            Logger.LogObj.Error(BellConstants.ErrorMessage);
+                            Logger.LogObj.Info("The attempted URL is: " + ResetURL);
                             return Result;
                         }
                     }
@@ -217,16 +230,22 @@ namespace BellScheduler
 
                             BellConstants.IsSuccess = false;
                             BellConstants.ErrorMessage = WE.Message + Environment.NewLine + BellConstants.BellSettingIssue;
-                            Logger.LogObj.Info("There is some error while uploading at line number " + LineNumber + "Of file " + ScheduleDataManager.BellListFilePath + WE.Message);
+                            Logger.LogObj.Error(BellConstants.ErrorMessage);
+                            Logger.LogObj.Info("There is some error while uploading at line number " + LineNumber + " Of file " + ScheduleDataManager.BellListFilePath + WE.Message);
+                            Logger.LogObj.Info("The attempted URL is: "+ UploadURL);
                         }
 
                     }
                     // Adding the delay
                     Thread.Sleep(Delay);
+                    TotalDelay += Delay;
                     LineNumber++;
                 }
             }
-           
+
+            var TimeSpent = (DateTime.Now - Performance);
+            Logger.LogObj.Debug("Uploading End");
+            Logger.LogObj.Info("Time spent during Uploading is " + TimeSpent.ToString() + "With Total Delay of " + TotalDelay.ToString() + " Mili Seconds");
             return Result;
             
         }

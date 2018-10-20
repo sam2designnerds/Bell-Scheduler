@@ -9,7 +9,7 @@ namespace BellScheduler
    public class DeviceDataModel
     {
         public int SerialNumber { get; set; }
-        public Boolean  DoClear { get; set; }
+        public Boolean DoClear { get; set; } = true;
         public String Host { get; set; } 
         public String Port { get; set; }
         public String UserName { get; set; } = "admin"; 

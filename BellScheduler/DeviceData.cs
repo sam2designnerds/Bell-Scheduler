@@ -25,7 +25,8 @@ namespace BellScheduler
                      || _deviceDM.Port != txtPort.Text
                      || _deviceDM.UserName != txtUserName.Text
                      || _deviceDM.Password != txtPassword.Text
-                     || _deviceDM.Password != txtPassword.Text)
+                     || _deviceDM.Password != txtPassword.Text
+                     || _deviceDM.Delay != Decimal.ToInt32(nudDelay.Value))
                 {
                     MakeDirty?.Invoke();
                 }
@@ -37,6 +38,7 @@ namespace BellScheduler
                 _deviceDM.UserName = txtUserName.Text;
                 _deviceDM.Password = txtPassword.Text;
                 _deviceDM.Password = txtPassword.Text;
+                _deviceDM.Delay = Decimal.ToInt32(nudDelay.Value);
                 return _deviceDM;
             }
             

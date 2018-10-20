@@ -338,17 +338,49 @@ namespace BellScheduler
 
         private void btnOpenDeviceList_Click(object sender, EventArgs e)
         {
-            if ((DeviceDataManager.IsDirty) &&
-                (MessageBox.Show("Do you want to save the content?", "Want to Save", MessageBoxButtons.YesNo) == DialogResult.Yes))
+            if (DeviceDataManager.IsDirty)
             {
-                DeviceDataManager.SaveDataToCSV();
+                var dlgResult = MessageBox.Show("Do you want to save the content?", "Want to Save", MessageBoxButtons.YesNoCancel);
+
+                if (dlgResult == DialogResult.Yes)
+                {
+                    DeviceDataManager.SaveDataToCSV();
+                    OpenDeviceListFile();
+                }
+                else if (dlgResult == DialogResult.No)
+                {
+                    OpenDeviceListFile();
+                }
+                else if (dlgResult == DialogResult.Cancel)
+                {
+                    // Do nothing, Cancelling out the Open file
+                }
+            }
+            else if (!DeviceDataManager.IsDirty)
+            {
+                //var dlgResult = MessageBox.Show("Do you want to proceed? It will clear the current list.", "Want to Proceed", buttons: MessageBoxButtons.YesNo);
+                //if (dlgResult == DialogResult.Yes)
+                //{
+                //    ClearDeviceList();
+                //}
+                //else if (dlgResult == DialogResult.No)
+                //{
+                //    // Dont do anything, Cancelling Out...........
+                //}   // Not required As of now......
+
+                OpenDeviceListFile();
             }
 
+           // OpenDeviceListFile();
+        }
+
+        private void OpenDeviceListFile()
+        {
             string filePath = String.Empty;
-           // List<DeviceDataModel> deviceDataList = new List<DeviceDataModel>();
+            // List<DeviceDataModel> deviceDataList = new List<DeviceDataModel>();
             List<DeviceData> dataUI = new List<DeviceData>();
             OpenFileDialog OFDialog = new OpenFileDialog();
-            
+
             DialogResult result = OFDialog.ShowDialog(); // Show the dialog.
             OFDialog.DefaultExt = BellConstants.BellCSVExtention;
             if (result == DialogResult.OK) // Test result.
@@ -363,10 +395,10 @@ namespace BellScheduler
             {
                 DeviceData TempDataUi = dataUI[i];
                 DeviceDataModel DDM = new DeviceDataModel();
-                DDM =TempDataUi.deviceDataModel;
+                DDM = TempDataUi.deviceDataModel;
                 DDM.SerialNumber = i + 1;
                 TempDataUi.deviceDataModel = DDM;
-                TempDataUi.Location = new Point(0,  (i * 33));
+                TempDataUi.Location = new Point(0, (i * 33));
                 TempDataUi.Controls["btnDelete"].Click += DeleteDeviceFromList;
                 TempDataUi.Controls["chkDownload"].Click += SelectDownloadFromList;
                 TempDataUi.MakeDirty += DeviceDataManager.ActionMakeDirty;
@@ -405,18 +437,47 @@ namespace BellScheduler
 
         private void btnCloseDeviceList_Click(object sender, EventArgs e)
         {
-            if ((DeviceDataManager.IsDirty || string.IsNullOrEmpty(DeviceDataManager.DeviceListFilePath)) &&
-               (MessageBox.Show("Do you want to save the content?", "Want to Save", MessageBoxButtons.YesNo) == DialogResult.Yes))
+            bool IsDirtyOrEmptyPath = (DeviceDataManager.IsDirty || string.IsNullOrEmpty(DeviceDataManager.DeviceListFilePath));
+            if (IsDirtyOrEmptyPath)
+               
             {
-                DeviceDataManager.SaveDataToCSV();
+                var dlgResult = MessageBox.Show("Do you want to save the content?", "Want to Save", buttons: MessageBoxButtons.YesNoCancel);
+                if (dlgResult == DialogResult.Yes)
+                {
+                    DeviceDataManager.SaveDataToCSV();
+                    ClearDeviceList();
+                }
+                else if (dlgResult == DialogResult.No)
+                {
+                    ClearDeviceList();
+                }
+                else if (dlgResult == DialogResult.Cancel)
+                {
+                    // Dont do anything, Cancelling Out...........
+                }
+            }
+            else if (!IsDirtyOrEmptyPath)
+            {
+                var dlgResult = MessageBox.Show("Do you want to proceed? It will clear the current list.", "Want to Proceed", buttons: MessageBoxButtons.YesNo);
+                if (dlgResult == DialogResult.Yes)
+                {
+                    ClearDeviceList();
+                }
+                else if (dlgResult == DialogResult.No)
+                {
+                    // Dont do anything, Cancelling Out...........
+                }
             }
 
+        }
+
+        private void ClearDeviceList()
+        {
             pnlDeviceList.Controls.Clear();
             DeviceDataManager.DeviceDataUI.Clear();
             DeviceDataManager.ResetDirtyFlag();
             this.Invalidate();
         }
-
 
         public void DeleteScheduleFromList(object sender, EventArgs e)
         {
@@ -428,19 +489,39 @@ namespace BellScheduler
 
         private void btnOpenBellList_Click(object sender, EventArgs e)
         {
-            if ((ScheduleDataManager.IsDirty) &&
-                 (MessageBox.Show("Do you want to save the content?", "Want to Save", MessageBoxButtons.YesNo) == DialogResult.Yes))
+            if (ScheduleDataManager.IsDirty)
             {
-               ScheduleDataManager.SaveDataToCSV();
+                var dlgResult = MessageBox.Show("Do you want to save the content?", "Want to Save", MessageBoxButtons.YesNoCancel);
+                if (dlgResult == DialogResult.Yes)
+                {
+                    ScheduleDataManager.SaveDataToCSV();
+                    OpenBellList();
+                }
+                else if (dlgResult == DialogResult.No)
+                {
+                    OpenBellList();
+                }
+                else if (dlgResult == DialogResult.Cancel)
+                {
+                  // Cancelling out the Open Bell List....
+                }
+            }
+            else if (!ScheduleDataManager.IsDirty)
+            {
+                OpenBellList();
             }
 
+        }
+
+        private void OpenBellList()
+        {
             string filePath = String.Empty;
             List<ScheduleData> dataUI = new List<ScheduleData>();
             OpenFileDialog OFDialog = new OpenFileDialog();
 
             DialogResult result = OFDialog.ShowDialog(); // Show the dialog.
             OFDialog.DefaultExt = BellConstants.BellCSVExtention;
-            if (result == DialogResult.OK && !string.IsNullOrEmpty(OFDialog.FileName)) 
+            if (result == DialogResult.OK && !string.IsNullOrEmpty(OFDialog.FileName))
             {
                 filePath = OFDialog.FileName;
 
@@ -464,7 +545,6 @@ namespace BellScheduler
 
                 ScheduleDataManager.ResetDirtyFlag();
             }
-           
         }
 
         private void btnAddBellData_Click(object sender, EventArgs e)
@@ -480,17 +560,47 @@ namespace BellScheduler
 
         private void btnCloseBellList_Click(object sender, EventArgs e)
         {
-            if ((ScheduleDataManager.IsDirty || string.IsNullOrEmpty(ScheduleDataManager.BellListFilePath)) &&
-                (MessageBox.Show("Do you want to save the content?", "Want to Save", MessageBoxButtons.YesNo) == DialogResult.Yes))
+            bool IsDirtyOrEmptyPath = (ScheduleDataManager.IsDirty || string.IsNullOrEmpty(ScheduleDataManager.BellListFilePath));
+
+            if (IsDirtyOrEmptyPath)
             {
-                ScheduleDataManager.SaveDataToCSV();
+                var dlgResult = MessageBox.Show("Do you want to save the content?", "Want to Save", buttons: MessageBoxButtons.YesNoCancel);
+                if (dlgResult == DialogResult.Yes)
+                {
+                    ScheduleDataManager.SaveDataToCSV();
+                    ClearBellList();
+                }
+                else if (dlgResult == DialogResult.No)
+                {
+                    ClearBellList();
+                }
+                else if (dlgResult == DialogResult.Cancel)
+                {
+                    // Dont do anything, Cancelling Out...........
+                }
+                
+            }
+            else if (!IsDirtyOrEmptyPath)
+            {
+              var  dlgResult = MessageBox.Show("Do you want to proceed? It will clear the current list.", "Want to Proceed", buttons: MessageBoxButtons.YesNo);
+              if (dlgResult ==  DialogResult.Yes)
+                {
+                    ClearBellList();
+                }
+              else if (dlgResult == DialogResult.No)
+                {
+                    // Dont do anything, Cancelling Out...........
+                }
             }
 
+        }
+
+        private void ClearBellList()
+        {
             pnlScheduleContainer.Controls.Clear();
             ScheduleDataManager.BellDataUI.Clear();
             ScheduleDataManager.ResetDirtyFlag();
             this.Invalidate();
-
         }
 
         private void btnDownloadBellList_Click(object sender, EventArgs e)
@@ -556,6 +666,14 @@ namespace BellScheduler
             menuStrip1.Visible = false;
         }
 
-      
+        private void btnSaveAsScheduleData_Click(object sender, EventArgs e)
+        {
+            ScheduleDataManager.SaveDataToCSV(SaveAs:true);
+        }
+
+        private void btnSaveAsDeviceList_Click(object sender, EventArgs e)
+        {
+            DeviceDataManager.SaveDataToCSV(SaveAs:true);
+        }
     }
 }

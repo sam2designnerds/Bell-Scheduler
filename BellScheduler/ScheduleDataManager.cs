@@ -143,9 +143,9 @@ namespace BellScheduler
             return SD;
         }
 
-        public static void SaveDataToCSV()
+        public static void SaveDataToCSV(bool SaveAs = false)
         {
-            if ((string.IsNullOrEmpty(BellListFilePath)))
+            if ((string.IsNullOrEmpty(BellListFilePath)) || SaveAs)
             {
                 SaveFileDialog SFDialog = new SaveFileDialog();
 

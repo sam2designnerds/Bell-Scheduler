@@ -65,9 +65,9 @@ namespace BellScheduler
             return DD;
         }
 
-        public static void SaveDataToCSV()
+        public static void SaveDataToCSV(bool SaveAs = false)
         {
-            if ((string.IsNullOrEmpty(DeviceListFilePath)))
+            if ((string.IsNullOrEmpty(DeviceListFilePath)) || SaveAs)
             {
                 SaveFileDialog SFDialog = new SaveFileDialog();
 
@@ -92,6 +92,7 @@ namespace BellScheduler
             ResetDirtyFlag();
 
         }
+
 
         public static void WriteCSV()
         {
