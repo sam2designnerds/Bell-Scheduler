@@ -80,6 +80,7 @@
             this.pnlContainerForScheduleTab = new System.Windows.Forms.Panel();
             this.pnlScheduleButton = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnSaveAsScheduleData = new System.Windows.Forms.Button();
             this.btnCloseBellList = new System.Windows.Forms.Button();
             this.btnAddBellData = new System.Windows.Forms.Button();
             this.btnOpenBellList = new System.Windows.Forms.Button();
@@ -88,14 +89,13 @@
             this.pndDeviceTabContainer = new System.Windows.Forms.Panel();
             this.PnlDeviceButtons = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btnSaveAsDeviceList = new System.Windows.Forms.Button();
             this.btnSingleDownload = new System.Windows.Forms.Button();
             this.btnOpenDeviceList = new System.Windows.Forms.Button();
             this.btnCloseDeviceList = new System.Windows.Forms.Button();
             this.btnSaveDeviceList = new System.Windows.Forms.Button();
             this.btnMultiDeviceUpload = new System.Windows.Forms.Button();
             this.btnAddDevice = new System.Windows.Forms.Button();
-            this.btnSaveAsScheduleData = new System.Windows.Forms.Button();
-            this.btnSaveAsDeviceList = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.pnlHeaderDeviceList.SuspendLayout();
@@ -293,7 +293,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(85, 180);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 28);
             this.button1.TabIndex = 7;
@@ -307,7 +307,7 @@
             this.pnlDeviceList.BackColor = System.Drawing.Color.LightBlue;
             this.pnlDeviceList.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.pnlDeviceList.Location = new System.Drawing.Point(3, 34);
-            this.pnlDeviceList.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlDeviceList.Margin = new System.Windows.Forms.Padding(4);
             this.pnlDeviceList.Name = "pnlDeviceList";
             this.pnlDeviceList.Size = new System.Drawing.Size(1031, 601);
             this.pnlDeviceList.TabIndex = 8;
@@ -572,7 +572,7 @@
             this.pnlTestControls.Controls.Add(this.rtbContent);
             this.pnlTestControls.Controls.Add(this.btnUploadBell);
             this.pnlTestControls.Location = new System.Drawing.Point(792, 316);
-            this.pnlTestControls.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pnlTestControls.Margin = new System.Windows.Forms.Padding(4);
             this.pnlTestControls.Name = "pnlTestControls";
             this.pnlTestControls.Size = new System.Drawing.Size(272, 188);
             this.pnlTestControls.TabIndex = 4;
@@ -646,10 +646,11 @@
             // 
             this.pnlScheduleButton.BackColor = System.Drawing.Color.LightBlue;
             this.pnlScheduleButton.Controls.Add(this.panel2);
-            this.pnlScheduleButton.Location = new System.Drawing.Point(1168, 10);
+            this.pnlScheduleButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pnlScheduleButton.Location = new System.Drawing.Point(1176, 2);
             this.pnlScheduleButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pnlScheduleButton.Name = "pnlScheduleButton";
-            this.pnlScheduleButton.Size = new System.Drawing.Size(153, 667);
+            this.pnlScheduleButton.Size = new System.Drawing.Size(153, 643);
             this.pnlScheduleButton.TabIndex = 10;
             // 
             // panel2
@@ -660,21 +661,35 @@
             this.panel2.Controls.Add(this.btnAddBellData);
             this.panel2.Controls.Add(this.btnOpenBellList);
             this.panel2.Controls.Add(this.btnSaveScheduleData);
-            this.panel2.Location = new System.Drawing.Point(9, 48);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(125, 264);
+            this.panel2.Size = new System.Drawing.Size(153, 643);
             this.panel2.TabIndex = 3;
+            // 
+            // btnSaveAsScheduleData
+            // 
+            this.btnSaveAsScheduleData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSaveAsScheduleData.Font = new System.Drawing.Font("Segoe UI Emoji", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSaveAsScheduleData.Location = new System.Drawing.Point(33, 111);
+            this.btnSaveAsScheduleData.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnSaveAsScheduleData.Name = "btnSaveAsScheduleData";
+            this.btnSaveAsScheduleData.Size = new System.Drawing.Size(88, 33);
+            this.btnSaveAsScheduleData.TabIndex = 4;
+            this.btnSaveAsScheduleData.Text = "Save As";
+            this.btnSaveAsScheduleData.UseVisualStyleBackColor = true;
+            this.btnSaveAsScheduleData.Click += new System.EventHandler(this.btnSaveAsScheduleData_Click);
             // 
             // btnCloseBellList
             // 
             this.btnCloseBellList.BackColor = System.Drawing.Color.LightBlue;
             this.btnCloseBellList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCloseBellList.Font = new System.Drawing.Font("Segoe UI Emoji", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCloseBellList.Location = new System.Drawing.Point(20, 213);
+            this.btnCloseBellList.Location = new System.Drawing.Point(33, 205);
             this.btnCloseBellList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnCloseBellList.Name = "btnCloseBellList";
-            this.btnCloseBellList.Size = new System.Drawing.Size(85, 33);
+            this.btnCloseBellList.Size = new System.Drawing.Size(88, 33);
             this.btnCloseBellList.TabIndex = 3;
             this.btnCloseBellList.Text = "Clear";
             this.btnCloseBellList.UseVisualStyleBackColor = false;
@@ -684,10 +699,10 @@
             // 
             this.btnAddBellData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddBellData.Font = new System.Drawing.Font("Segoe UI Emoji", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddBellData.Location = new System.Drawing.Point(20, 163);
+            this.btnAddBellData.Location = new System.Drawing.Point(33, 158);
             this.btnAddBellData.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddBellData.Name = "btnAddBellData";
-            this.btnAddBellData.Size = new System.Drawing.Size(85, 33);
+            this.btnAddBellData.Size = new System.Drawing.Size(88, 33);
             this.btnAddBellData.TabIndex = 1;
             this.btnAddBellData.Text = "Add Bell";
             this.btnAddBellData.UseVisualStyleBackColor = true;
@@ -698,10 +713,10 @@
             this.btnOpenBellList.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnOpenBellList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenBellList.Font = new System.Drawing.Font("Segoe UI Emoji", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOpenBellList.Location = new System.Drawing.Point(20, 17);
+            this.btnOpenBellList.Location = new System.Drawing.Point(33, 17);
             this.btnOpenBellList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnOpenBellList.Name = "btnOpenBellList";
-            this.btnOpenBellList.Size = new System.Drawing.Size(85, 33);
+            this.btnOpenBellList.Size = new System.Drawing.Size(88, 33);
             this.btnOpenBellList.TabIndex = 0;
             this.btnOpenBellList.Text = "Open";
             this.btnOpenBellList.UseVisualStyleBackColor = true;
@@ -711,10 +726,10 @@
             // 
             this.btnSaveScheduleData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSaveScheduleData.Font = new System.Drawing.Font("Segoe UI Emoji", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSaveScheduleData.Location = new System.Drawing.Point(20, 69);
+            this.btnSaveScheduleData.Location = new System.Drawing.Point(33, 64);
             this.btnSaveScheduleData.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSaveScheduleData.Name = "btnSaveScheduleData";
-            this.btnSaveScheduleData.Size = new System.Drawing.Size(85, 33);
+            this.btnSaveScheduleData.Size = new System.Drawing.Size(88, 33);
             this.btnSaveScheduleData.TabIndex = 2;
             this.btnSaveScheduleData.Text = "Save";
             this.btnSaveScheduleData.UseVisualStyleBackColor = true;
@@ -750,10 +765,11 @@
             // 
             this.PnlDeviceButtons.Controls.Add(this.panel3);
             this.PnlDeviceButtons.Controls.Add(this.panel1);
-            this.PnlDeviceButtons.Location = new System.Drawing.Point(1059, 10);
+            this.PnlDeviceButtons.Dock = System.Windows.Forms.DockStyle.Right;
+            this.PnlDeviceButtons.Location = new System.Drawing.Point(1117, 0);
             this.PnlDeviceButtons.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PnlDeviceButtons.Name = "PnlDeviceButtons";
-            this.PnlDeviceButtons.Size = new System.Drawing.Size(209, 498);
+            this.PnlDeviceButtons.Size = new System.Drawing.Size(209, 643);
             this.PnlDeviceButtons.TabIndex = 9;
             // 
             // panel3
@@ -766,20 +782,34 @@
             this.panel3.Controls.Add(this.btnSaveDeviceList);
             this.panel3.Controls.Add(this.btnMultiDeviceUpload);
             this.panel3.Controls.Add(this.btnAddDevice);
-            this.panel3.Location = new System.Drawing.Point(27, 25);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panel3.Location = new System.Drawing.Point(56, 0);
             this.panel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(153, 353);
+            this.panel3.Size = new System.Drawing.Size(153, 643);
             this.panel3.TabIndex = 13;
+            // 
+            // btnSaveAsDeviceList
+            // 
+            this.btnSaveAsDeviceList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSaveAsDeviceList.Font = new System.Drawing.Font("Segoe UI Emoji", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSaveAsDeviceList.Location = new System.Drawing.Point(33, 111);
+            this.btnSaveAsDeviceList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnSaveAsDeviceList.Name = "btnSaveAsDeviceList";
+            this.btnSaveAsDeviceList.Size = new System.Drawing.Size(88, 33);
+            this.btnSaveAsDeviceList.TabIndex = 14;
+            this.btnSaveAsDeviceList.Text = "Save As";
+            this.btnSaveAsDeviceList.UseVisualStyleBackColor = true;
+            this.btnSaveAsDeviceList.Click += new System.EventHandler(this.btnSaveAsDeviceList_Click);
             // 
             // btnSingleDownload
             // 
             this.btnSingleDownload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSingleDownload.Font = new System.Drawing.Font("Segoe UI Emoji", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSingleDownload.Location = new System.Drawing.Point(19, 200);
+            this.btnSingleDownload.Location = new System.Drawing.Point(24, 205);
             this.btnSingleDownload.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSingleDownload.Name = "btnSingleDownload";
-            this.btnSingleDownload.Size = new System.Drawing.Size(113, 34);
+            this.btnSingleDownload.Size = new System.Drawing.Size(107, 33);
             this.btnSingleDownload.TabIndex = 13;
             this.btnSingleDownload.Text = "Download";
             this.btnSingleDownload.UseVisualStyleBackColor = true;
@@ -789,7 +819,7 @@
             // 
             this.btnOpenDeviceList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOpenDeviceList.Font = new System.Drawing.Font("Segoe UI Emoji", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOpenDeviceList.Location = new System.Drawing.Point(31, 18);
+            this.btnOpenDeviceList.Location = new System.Drawing.Point(33, 17);
             this.btnOpenDeviceList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnOpenDeviceList.Name = "btnOpenDeviceList";
             this.btnOpenDeviceList.Size = new System.Drawing.Size(88, 33);
@@ -802,10 +832,10 @@
             // 
             this.btnCloseDeviceList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCloseDeviceList.Font = new System.Drawing.Font("Segoe UI Emoji", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCloseDeviceList.Location = new System.Drawing.Point(31, 301);
+            this.btnCloseDeviceList.Location = new System.Drawing.Point(33, 299);
             this.btnCloseDeviceList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnCloseDeviceList.Name = "btnCloseDeviceList";
-            this.btnCloseDeviceList.Size = new System.Drawing.Size(88, 34);
+            this.btnCloseDeviceList.Size = new System.Drawing.Size(88, 33);
             this.btnCloseDeviceList.TabIndex = 12;
             this.btnCloseDeviceList.Text = "Clear";
             this.btnCloseDeviceList.UseVisualStyleBackColor = true;
@@ -815,7 +845,7 @@
             // 
             this.btnSaveDeviceList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSaveDeviceList.Font = new System.Drawing.Font("Segoe UI Emoji", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSaveDeviceList.Location = new System.Drawing.Point(31, 65);
+            this.btnSaveDeviceList.Location = new System.Drawing.Point(33, 64);
             this.btnSaveDeviceList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSaveDeviceList.Name = "btnSaveDeviceList";
             this.btnSaveDeviceList.Size = new System.Drawing.Size(88, 33);
@@ -828,10 +858,10 @@
             // 
             this.btnMultiDeviceUpload.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnMultiDeviceUpload.Font = new System.Drawing.Font("Segoe UI Emoji", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMultiDeviceUpload.Location = new System.Drawing.Point(31, 250);
+            this.btnMultiDeviceUpload.Location = new System.Drawing.Point(33, 252);
             this.btnMultiDeviceUpload.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnMultiDeviceUpload.Name = "btnMultiDeviceUpload";
-            this.btnMultiDeviceUpload.Size = new System.Drawing.Size(88, 34);
+            this.btnMultiDeviceUpload.Size = new System.Drawing.Size(88, 33);
             this.btnMultiDeviceUpload.TabIndex = 11;
             this.btnMultiDeviceUpload.Text = "Upload";
             this.btnMultiDeviceUpload.UseVisualStyleBackColor = true;
@@ -841,7 +871,7 @@
             // 
             this.btnAddDevice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAddDevice.Font = new System.Drawing.Font("Segoe UI Emoji", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddDevice.Location = new System.Drawing.Point(19, 155);
+            this.btnAddDevice.Location = new System.Drawing.Point(24, 158);
             this.btnAddDevice.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddDevice.Name = "btnAddDevice";
             this.btnAddDevice.Size = new System.Drawing.Size(107, 33);
@@ -849,32 +879,6 @@
             this.btnAddDevice.Text = "Add Device";
             this.btnAddDevice.UseVisualStyleBackColor = true;
             this.btnAddDevice.Click += new System.EventHandler(this.btnAddDevice_Click);
-            // 
-            // btnSaveAsScheduleData
-            // 
-            this.btnSaveAsScheduleData.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSaveAsScheduleData.Font = new System.Drawing.Font("Segoe UI Emoji", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSaveAsScheduleData.Location = new System.Drawing.Point(19, 115);
-            this.btnSaveAsScheduleData.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnSaveAsScheduleData.Name = "btnSaveAsScheduleData";
-            this.btnSaveAsScheduleData.Size = new System.Drawing.Size(85, 33);
-            this.btnSaveAsScheduleData.TabIndex = 4;
-            this.btnSaveAsScheduleData.Text = "Save As";
-            this.btnSaveAsScheduleData.UseVisualStyleBackColor = true;
-            this.btnSaveAsScheduleData.Click += new System.EventHandler(this.btnSaveAsScheduleData_Click);
-            // 
-            // btnSaveAsDeviceList
-            // 
-            this.btnSaveAsDeviceList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSaveAsDeviceList.Font = new System.Drawing.Font("Segoe UI Emoji", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSaveAsDeviceList.Location = new System.Drawing.Point(31, 110);
-            this.btnSaveAsDeviceList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnSaveAsDeviceList.Name = "btnSaveAsDeviceList";
-            this.btnSaveAsDeviceList.Size = new System.Drawing.Size(88, 33);
-            this.btnSaveAsDeviceList.TabIndex = 14;
-            this.btnSaveAsDeviceList.Text = "Save As";
-            this.btnSaveAsDeviceList.UseVisualStyleBackColor = true;
-            this.btnSaveAsDeviceList.Click += new System.EventHandler(this.btnSaveAsDeviceList_Click);
             // 
             // BellForm
             // 
