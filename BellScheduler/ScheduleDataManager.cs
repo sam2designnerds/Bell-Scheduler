@@ -264,9 +264,17 @@ namespace BellScheduler
                 Bell = Bell + ',' + item.scheduleDM.BellTime.Hour.ToString();
                 Bell = Bell + ',' + item.scheduleDM.BellTime.Minute.ToString();
                 Bell = Bell + ',' + item.scheduleDM.BellTime.Second.ToString();
-                Bell = Bell + ',' + (item.scheduleDM.BellDate.Year-2000).ToString();
-                Bell = Bell + ',' + item.scheduleDM.BellDate.Month.ToString();
-                Bell = Bell + ',' + item.scheduleDM.BellDate.Day.ToString();
+                if (item.scheduleDM.IsDateRequired)
+                {
+                    Bell = Bell + ',' + (item.scheduleDM.BellDate.Year - 2000).ToString();
+                    Bell = Bell + ',' + item.scheduleDM.BellDate.Month.ToString();
+                    Bell = Bell + ',' + item.scheduleDM.BellDate.Day.ToString();
+                }
+                else // if not required send the values 0(year),0(month),0(day)
+                {
+                    Bell = Bell + ',' + "0,0,0";
+                }
+                
                 Bell = Bell + ',' + item.scheduleDM.BellNumbers;
                 Bell = Bell + ',' + item.scheduleDM.BellDays;
                 Bell = Bell + ',' + item.scheduleDM.BellDuration.ToString();
